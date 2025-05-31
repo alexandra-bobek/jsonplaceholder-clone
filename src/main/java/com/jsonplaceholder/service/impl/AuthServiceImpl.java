@@ -68,7 +68,15 @@ public class AuthServiceImpl implements AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = tokenProvider.generateToken(authentication);
 
-        return new JwtResponse(jwt, authUser.getId(), authUser.getName(), authUser.getEmail());
+        return new JwtResponse(
+            jwt,
+            new JwtResponse.UserInfo(
+                authUser.getId(),
+                authUser.getName(),
+                authUser.getUser().getUsername(),
+                authUser.getEmail()
+            )
+        );
     }
 
     @Override
@@ -81,6 +89,14 @@ public class AuthServiceImpl implements AuthService {
         AuthUser authUser = authUserRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return new JwtResponse(jwt, authUser.getId(), authUser.getName(), authUser.getEmail());
+        return new JwtResponse(
+            jwt,
+            new JwtResponse.UserInfo(
+                authUser.getId(),
+                authUser.getName(),
+                authUser.getUser().getUsername(),
+                authUser.getEmail()
+            )
+        );
     }
 } 

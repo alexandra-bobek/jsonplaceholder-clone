@@ -8,14 +8,19 @@ import lombok.Data;
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
-    private Long id;
-    private String name;
-    private String email;
+    private UserInfo user;
 
-    public JwtResponse(String token, Long id, String name, String email) {
+    @Data
+    @AllArgsConstructor
+    public static class UserInfo {
+        private Long id;
+        private String name;
+        private String username;
+        private String email;
+    }
+
+    public JwtResponse(String token, UserInfo user) {
         this.token = token;
-        this.id = id;
-        this.name = name;
-        this.email = email;
+        this.user = user;
     }
 } 
