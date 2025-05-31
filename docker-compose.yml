@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlite:/data/jsonplaceholder.db
+      - JWT_SECRET=your-256-bit-secret-key-here
+    volumes:
+      - ./data:/data
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "http://localhost:3000/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3 
